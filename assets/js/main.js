@@ -28,8 +28,11 @@
 	window.addEventListener("scroll", onScroll, { passive: true });
 	onScroll();
 
-	// Scroll-spy: highlight the nav link of the section in view
-	var sections = ["projects", "about", "contact"]
+	// Scroll-spy: highlight the nav link (or the brand, on the hero) of the section in view
+	var brand = document.querySelector(".brand");
+	var spyLinks = [brand].concat(Array.prototype.slice.call(navLinks));
+
+	var sections = ["hero", "projects", "about", "contact"]
 		.map(function (id) { return document.getElementById(id); })
 		.filter(Boolean);
 
@@ -37,7 +40,7 @@
 		function (entries) {
 			entries.forEach(function (entry) {
 				if (!entry.isIntersecting) return;
-				navLinks.forEach(function (link) {
+				spyLinks.forEach(function (link) {
 					link.classList.toggle(
 						"active",
 						link.getAttribute("href") === "#" + entry.target.id
