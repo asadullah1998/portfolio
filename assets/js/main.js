@@ -52,6 +52,29 @@
 	);
 	sections.forEach(function (section) { spy.observe(section); });
 
+	// Tap-to-flip project cards on touch devices (no hover available there)
+	var isTouch = window.matchMedia("(hover: none)").matches;
+	if (isTouch) {
+		document.querySelectorAll(".card").forEach(function (card) {
+			card.addEventListener("click", function (e) {
+				if (!card.classList.contains("flipped")) {
+					e.preventDefault();
+					document.querySelectorAll(".card.flipped").forEach(function (other) {
+						if (other !== card) other.classList.remove("flipped");
+					});
+					card.classList.add("flipped");
+				}
+			});
+		});
+		document.addEventListener("click", function (e) {
+			if (!e.target.closest(".card")) {
+				document.querySelectorAll(".card.flipped").forEach(function (card) {
+					card.classList.remove("flipped");
+				});
+			}
+		});
+	}
+
 	// Scroll-reveal animations
 	var reveals = document.querySelectorAll(".reveal");
 	var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
